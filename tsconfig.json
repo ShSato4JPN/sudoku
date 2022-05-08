@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "lib": ["esnext", "dom"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // 出力先などは webpack 側で指定するので本質的には必要なし
+    "sourceMap": true,
+    "outDir": "./dist",
+    "sourceRoot": "./src",
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+  }
+}
