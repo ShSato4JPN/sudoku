@@ -1,6 +1,6 @@
 import { data as fields, values } from './sudoku-data.js'
 import { VERTICAL, VerticalType, HORIZONTAL, HorizontalType } from './sudoku-types.js'
-import { isValidDoubleCheck } from './sudoku-utils.js'
+import * as Utils from './sudoku-utils.js'
 
 // 縦軸同値チェック
 const isExistsSameValueOnVertical = (fieldX: HorizontalType, cellX: number, checkVal: number) => {
@@ -58,45 +58,40 @@ const getFieldCandidatesList = (fieldY: VerticalType, fieldX: HorizontalType) =>
 
 // console.log(getFieldCandidatesList(VERTICAL.TOP, HORIZONTAL.LEFT))
 
-const list = getFieldCandidatesList(VERTICAL.TOP, HORIZONTAL.LEFT)
-const temp = []
-for (let y = 0; y < 3; y++) {
-  for (let x = 0; x < 3; x++) {
-    
-    if (fields[VERTICAL.TOP][HORIZONTAL.LEFT][y][x] === 0) {
-
+const saveAry = Utils.initMatrix()
+for (const v of Object.values(VERTICAL)) {
+  for (const h of Object.values(HORIZONTAL)) {
+    // 候補リストを取得
+    const candidatesList = getFieldCandidatesList(v, h)
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        const insertList: number[] = []
+        if (fields[v][h][y][x] === 0) {
+          // 候補リストの中からさらに絞り込む
+          const tempAry: number[] = []
+          for (const val of candidatesList) {
+            if (
+              !isExistsSameValueOnVertical(h, x, Number(val)) &&
+              !isExistsSameValueOnHorizontal(v, y, Number(val))
+            ) {
+              tempAry.push(Number(val))
+            }
+          }
+          saveAry[v][h][y][x] = tempAry
+        } else {
+          saveAry[v][h][y][x] = [fields[v][h][y][x]]
+        }
+        //candidatesList[v][h][y].push(insertList)
+      }
     }
   }
 }
 
-// for (let y = 0; y < 3; y++) {
-//   for (let x = 0; x < 3; x++) {
-//     if (fields[VERTICAL.TOP][HORIZONTAL.LEFT][y][x] === 0) {
-
-//     }
-//   }
-// }
-
-// 所属フィールドチェック
-// const isExistsSameValueOnField = (
-//   fieldY: VerticalType,
-//   fieldX: HorizontalType,
-//   cellY: number,
-//   cellX: number
-// ) => {
-//   const chkVal = fields[fieldY][fieldX][cellY][cellX]
-//   for (let y = 0; y < 3; y++) {
-//     for (let x = 0; x < 3; x++) {
-//       if (y === cellY && x === cellX) {
-//         continue
-//       } else {
-//         if (chkVal === fields[fieldY][fieldX][y][x]) {
-//           return true
-//         }
-//       }
-//     }
-//   }
-//   return false
-// }
-
-//isExistsSameValueOnField(VERTICAL.MIDDLE, HORIZONTAL.CENTER, 0, 1)
+const list = getFieldCandidatesList(VERTICAL.TOP, HORIZONTAL.LEFT)
+const temp = []
+for (let y = 0; y < 3; y++) {
+  for (let x = 0; x < 3; x++) {
+    if (fields[VERTICAL.TOP][HORIZONTAL.LEFT][y][x] === 0) {
+    }
+  }
+}
