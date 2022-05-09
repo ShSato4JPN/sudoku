@@ -3,7 +3,7 @@
     "target": "es2020",
     "module": "es2020",
     "lib": ["esnext", "dom"],
-    "strict": true,
+    "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
